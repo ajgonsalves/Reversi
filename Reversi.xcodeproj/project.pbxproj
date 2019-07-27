@@ -12,6 +12,7 @@
 		11A6416C22D5CEE600449155 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11A6416A22D5CEE600449155 /* Main.storyboard */; };
 		11A6416E22D5CEE800449155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11A6416D22D5CEE800449155 /* Assets.xcassets */; };
 		11A6417122D5CEE800449155 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11A6416F22D5CEE800449155 /* LaunchScreen.storyboard */; };
+		11F18A6822EAE7C90013EAE4 /* ReversiBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F18A6722EAE7C90013EAE4 /* ReversiBoard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		11A6416D22D5CEE800449155 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11A6417022D5CEE800449155 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		11A6417222D5CEE800449155 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		11F18A6722EAE7C90013EAE4 /* ReversiBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversiBoard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,23 @@
 		11A6416522D5CEE600449155 /* Reversi */ = {
 			isa = PBXGroup;
 			children = (
-				11A6416622D5CEE600449155 /* AppDelegate.swift */,
+				11A6417822D5CF1E00449155 /* SupportingFiles */,
 				11A6416822D5CEE600449155 /* ViewController.swift */,
-				11A6416A22D5CEE600449155 /* Main.storyboard */,
-				11A6416D22D5CEE800449155 /* Assets.xcassets */,
-				11A6416F22D5CEE800449155 /* LaunchScreen.storyboard */,
 				11A6417222D5CEE800449155 /* Info.plist */,
+				11F18A6722EAE7C90013EAE4 /* ReversiBoard.swift */,
+				11A6416A22D5CEE600449155 /* Main.storyboard */,
 			);
 			path = Reversi;
+			sourceTree = "<group>";
+		};
+		11A6417822D5CF1E00449155 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				11A6416F22D5CEE800449155 /* LaunchScreen.storyboard */,
+				11A6416622D5CEE600449155 /* AppDelegate.swift */,
+				11A6416D22D5CEE800449155 /* Assets.xcassets */,
+			);
+			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11F18A6822EAE7C90013EAE4 /* ReversiBoard.swift in Sources */,
 				11A6416922D5CEE600449155 /* ViewController.swift in Sources */,
 				11A6416722D5CEE600449155 /* AppDelegate.swift in Sources */,
 			);
