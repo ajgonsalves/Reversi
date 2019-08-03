@@ -24,14 +24,22 @@ struct ReversiBoard {
 	}
 	
 	private(set) var board: [ReversiSpace] = Array(repeating: ReversiSpace.blank, count: 64)
-	private(set) var whiteOptions: [Int] = [27,28,35,36]
+	private(set) var whiteOptions = [Int]()
 	private(set) var blackOptions = [Int]()
 	private(set) var whiteScore = 0
 	private(set) var blackScore = 0
 	private(set) var turn = true // 0 = black turn, 1 = white turn
-	private var firstTurnFinished = false
 	private var previousPass = false
 	private(set) var victor: ReversiSpace? = nil
+	
+	mutating func othelloInit() {
+		board[27] = ReversiSpace.white
+		board[36] = ReversiSpace.white
+		board[28] = ReversiSpace.black
+		board[35] = ReversiSpace.black
+		updateScore()
+		updateOptions()
+	}
 	
 	mutating func spaceIsPlayable(space: Int, tribe: ReversiSpace) -> Bool {
 		// check if player can make a move
@@ -56,25 +64,13 @@ struct ReversiBoard {
 		}
 	}
 	
-	mutating func updateScore() {
-		whiteScore = board.filter {$0 == ReversiSpace.white}.count
-		blackScore = board.filter {$0 == ReversiSpace.black}.count
-	}
-	
-	mutating func pass() {
-		turn = !turn
-		if previousPass {
-			if whiteScore > blackScore {
-				victor = ReversiSpace.white
-			}
-			else if blackScore > whiteScore {
-				victor = ReversiSpace.white
-			}
-			else {
-				victor = ReversiSpace.blank
-			}
+	func SpaceinBounds(space: Int) -> Bool {
+		if (space < 0 || space > 63) {
+			return false
 		}
-		previousPass = true
+		else {
+			return true
+		}
 	}
 	
 	func NinBounds(space: Int) -> Bool {
@@ -149,86 +145,188 @@ struct ReversiBoard {
 		}
 	}
 	
-	mutating func addToOptions(space: Int, tribe: ReversiSpace) {
-		// North
-		if (NinBounds(space: space) && board[space - 8] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space - 8)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space - 8)
-			}
-		}
+	mutating func updateOptions() {
+		whiteOptions.removeAll()
+		blackOptions.removeAll()
 		
-		// Northeast
-		if (NEinBounds(space: space) && board[space - 7] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space - 7)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space - 7)
+		for i in 0..<64 {
+			if board[i] == ReversiSpace.blank {
+				
+				// North
+				if NinBounds(space: i) && board[i - 8] != ReversiSpace.blank {
+					var endPoint = i - 8
+					let skipTribe = board[endPoint]
+					
+					while (NinBounds(space: endPoint) && board[endPoint - 8] == skipTribe) {
+						endPoint -= 8
+					}
+					
+					if NinBounds(space: endPoint) && board[endPoint - 8] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// Northeast
+				if NEinBounds(space: i) && board[i - 7] != ReversiSpace.blank{
+					var endPoint = i - 7
+					let skipTribe = board[endPoint]
+					
+					while (NEinBounds(space: endPoint) && board[endPoint - 7] == skipTribe) {
+						endPoint -= 7
+					}
+					
+					if NEinBounds(space: endPoint) && board[endPoint - 7] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// East
+				if EinBounds(space: i) && board[i + 1] != ReversiSpace.blank {
+					var endPoint = i + 1
+					let skipTribe = board[endPoint]
+					
+					while (EinBounds(space: endPoint) && board[endPoint + 1] == skipTribe) {
+						endPoint += 1
+					}
+					
+					if EinBounds(space: endPoint) && board[endPoint + 1] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// Southast
+				if SEinBounds(space: i) && board[i + 9] != ReversiSpace.blank {
+					var endPoint = i + 9
+					let skipTribe = board[endPoint]
+					
+					while (SEinBounds(space: endPoint) && board[endPoint + 9] == skipTribe) {
+						endPoint += 9
+					}
+					
+					if SEinBounds(space: endPoint) && board[endPoint + 9] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// South
+				if SinBounds(space: i) && board[i + 8] != ReversiSpace.blank {
+					var endPoint = i + 8
+					let skipTribe = board[endPoint]
+					
+					while (SinBounds(space: endPoint) && board[endPoint + 8] == skipTribe) {
+						endPoint += 8
+					}
+					
+					if SinBounds(space: endPoint) && board[endPoint + 8] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// Southwest
+				if SWinBounds(space: i) && board[i + 7] != ReversiSpace.blank {
+					var endPoint = i + 7
+					let skipTribe = board[endPoint]
+					
+					while (SWinBounds(space: endPoint) && board[endPoint + 7] == skipTribe) {
+						endPoint += 7
+					}
+					
+					if SWinBounds(space: endPoint) && board[endPoint + 7] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// West
+				if WinBounds(space: i) && board[i - 1] != ReversiSpace.blank {
+					var endPoint = i - 1
+					let skipTribe = board[endPoint]
+					
+					while (WinBounds(space: endPoint) && board[endPoint - 1] == skipTribe) {
+						endPoint -= 1
+					}
+					
+					if WinBounds(space: endPoint) && board[endPoint - 1] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
+				
+				// Northwest
+				if NWinBounds(space: i) && board[i - 9] != ReversiSpace.blank {
+					var endPoint = i - 9
+					let skipTribe = board[endPoint]
+					
+					while (NWinBounds(space: endPoint) && board[endPoint - 9] == skipTribe) {
+						endPoint -= 9
+					}
+					
+					if NWinBounds(space: endPoint) && board[endPoint - 9] == skipTribe.oppositeTribe {
+						if skipTribe == ReversiSpace.white && !blackOptions.contains(i) {
+							blackOptions.append(i)
+						}
+						if skipTribe == ReversiSpace.black && !whiteOptions.contains(i) {
+							whiteOptions.append(i)
+						}
+					}
+				}
 			}
 		}
-		
-		// East
-		if (EinBounds(space: space) && board[space + 1] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space + 1)
+	}
+	
+	mutating func updateScore() {
+		whiteScore = board.filter {$0 == ReversiSpace.white}.count
+		blackScore = board.filter {$0 == ReversiSpace.black}.count
+	}
+	
+	mutating func pass() {
+		turn = !turn
+		updateOptions()
+		if previousPass {
+			if whiteScore > blackScore {
+				victor = ReversiSpace.white
 			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space + 1)
+			else if blackScore > whiteScore {
+				victor = ReversiSpace.white
 			}
-		}
-		
-		// Southeast
-		if (SEinBounds(space: space) && board[space + 9] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space + 9)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space + 9)
-			}
-		}
-		
-		// South
-		if (SinBounds(space: space) && board[space + 8] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space + 8)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space + 8)
+			else {
+				victor = ReversiSpace.blank
 			}
 		}
-		
-		// Southwest
-		if (SWinBounds(space: space) && board[space + 7] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space + 7)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space + 7)
-			}
-		}
-		
-		// West
-		if (WinBounds(space: space) && board[space - 1] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space - 1)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space - 1)
-			}
-		}
-		
-		// Northwest
-		if (NWinBounds(space: space) && board[space - 9] == ReversiSpace.blank) {
-			if (tribe == ReversiSpace.white) {
-				blackOptions.append(space - 9)
-			}
-			else if (tribe == ReversiSpace.black) {
-				whiteOptions.append(space - 9)
-			}
-		}
+		previousPass = true
 	}
 	
 	mutating func play(origin: Int, tribe: ReversiSpace) {
@@ -243,11 +341,10 @@ struct ReversiBoard {
 		while (NinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint -= 8
 		}
-		if (NinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
+		if (NinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point -= 8
 			}
 		}
@@ -261,7 +358,6 @@ struct ReversiBoard {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point -= 7
 			}
 		}
@@ -271,11 +367,10 @@ struct ReversiBoard {
 		while (EinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint += 1
 		}
-		if (NEinBounds(space: endPoint) && board[endPoint] == tribe) {
+		if (EinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point += 1
 			}
 		}
@@ -285,11 +380,10 @@ struct ReversiBoard {
 		while (SEinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint += 9
 		}
-		if (NEinBounds(space: endPoint) && board[endPoint] == tribe) {
+		if (SEinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point += 9
 			}
 		}
@@ -299,11 +393,10 @@ struct ReversiBoard {
 		while (SinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint += 8
 		}
-		if (NEinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
+		if (SinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point += 8
 			}
 		}
@@ -313,11 +406,10 @@ struct ReversiBoard {
 		while (SWinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint += 7
 		}
-		if (SEinBounds(space: endPoint) && board[endPoint] == tribe) {
+		if (SWinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point += 7
 			}
 		}
@@ -327,11 +419,10 @@ struct ReversiBoard {
 		while (WinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint -= 1
 		}
-		if (NEinBounds(space: endPoint) && board[endPoint] == tribe) {
+		if (WinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point -= 1
 			}
 		}
@@ -341,31 +432,18 @@ struct ReversiBoard {
 		while (NEinBounds(space: endPoint) && board[endPoint] == tribe.oppositeTribe) {
 			endPoint -= 9
 		}
-		if (NEinBounds(space: endPoint) && board[endPoint] == tribe) {
+		if (NWinBounds(space: endPoint) && board[endPoint] == tribe) {
 			var point = origin
 			while (point != endPoint) {
 				board[point] = tribe
-				addToOptions(space: point, tribe: tribe)
 				point -= 9
 			}
 		}
 		
-		// Remove origin from options
-		if let originIndex = whiteOptions.firstIndex(of: origin) {
-			whiteOptions.remove(at: originIndex)
-		}
-		if let originIndex = blackOptions.firstIndex(of: origin) {
-			blackOptions.remove(at: originIndex)
-		}
-		// if first turn, remove everything from whiteOptions
-		if firstTurnFinished {
-			whiteOptions.removeAll()
-		}
-		
 		// end turn semantics
-		updateScore()
-		addToOptions(space: origin, tribe: tribe)
 		turn = !turn
+		updateScore()
+		updateOptions()
 		previousPass = false
 	}
 }

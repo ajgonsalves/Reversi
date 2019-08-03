@@ -23,9 +23,11 @@ class ViewController: UIViewController {
 		blackLabel.layer.borderWidth = 3.0
 		updateViewFromModel()
 	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		game.othelloInit()
 		initializeView()
 	}
 
@@ -94,6 +96,7 @@ class ViewController: UIViewController {
 	
 	@IBAction func passButton(_ sender: UIButton) {
 		game.pass()
+		updateViewFromModel()
 	}
 	
 	@IBOutlet var whiteLabel: UILabel!
