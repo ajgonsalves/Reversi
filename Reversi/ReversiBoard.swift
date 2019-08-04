@@ -29,7 +29,7 @@ struct ReversiBoard {
 	private(set) var whiteScore = 0
 	private(set) var blackScore = 0
 	private(set) var turn = true // 0 = black turn, 1 = white turn
-	private var previousPass = false
+	private(set) var previousPass = false
 	private(set) var victor: ReversiSpace? = nil
 	
 	mutating func othelloInit() {
@@ -315,7 +315,11 @@ struct ReversiBoard {
 	mutating func pass() {
 		turn = !turn
 		updateOptions()
+		
 		if previousPass {
+			whiteOptions.removeAll()
+			blackOptions.removeAll()
+			
 			if whiteScore > blackScore {
 				victor = ReversiSpace.white
 			}
@@ -330,6 +334,11 @@ struct ReversiBoard {
 	}
 	
 	mutating func play(origin: Int, tribe: ReversiSpace) {
+		// check if tribe can play at all
+		if (tribe == ReversiSpace.white && whiteOptions.isEmpty) || (tribe == ReversiSpace.black && blackOptions.isEmpty) {
+			pass()
+			return
+		}
 		if (!spaceIsPlayable(space: origin, tribe: tribe)) {
 			return
 		}

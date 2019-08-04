@@ -491,7 +491,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c1p-Es-jAW">
-                                <rect key="frame" x="150" y="307" width="33" height="33"/>
+                                <rect key="frame" x="150" y="310" width="33" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
@@ -542,28 +542,39 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aSL-EF-2TV">
-                                <rect key="frame" x="171" y="617" width="33" height="30"/>
-                                <color key="backgroundColor" red="0.87632852157360408" green="0.70460246128826176" blue="0.094503129341505621" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Pass"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lun-3e-rXc">
+                                <rect key="frame" x="70" y="617" width="235" height="30"/>
+                                <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="passButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b7x-0q-e1W"/>
+                                    <action selector="pressPass:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Rid-B7-0ZT"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rV8-17-igw">
+                                <rect key="frame" x="20" y="582" width="335" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="1uJ-fW-QNk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="3Oq-nY-Fup"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="g4H-VM-98t" secondAttribute="bottom" constant="20" id="JVA-bb-MUT"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1uJ-fW-QNk" secondAttribute="bottom" constant="20" id="MWh-3h-KDA"/>
-                            <constraint firstItem="aSL-EF-2TV" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TrQ-8q-qOz"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="aSL-EF-2TV" secondAttribute="bottom" constant="20" id="gfZ-F8-CkE"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="g4H-VM-98t" secondAttribute="trailing" constant="20" id="pkl-YF-jNE"/>
+                            <constraint firstItem="rV8-17-igw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" symbolic="YES" id="AJE-Zi-aTq"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="g4H-VM-98t" secondAttribute="trailing" constant="20" id="AfG-fA-nxL"/>
+                            <constraint firstItem="Lun-3e-rXc" firstAttribute="top" secondItem="rV8-17-igw" secondAttribute="bottom" constant="14" id="ElI-r7-WBO"/>
+                            <constraint firstItem="g4H-VM-98t" firstAttribute="leading" secondItem="Lun-3e-rXc" secondAttribute="trailing" constant="8" symbolic="YES" id="Wga-MF-t7A"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Lun-3e-rXc" secondAttribute="bottom" constant="20" id="cBR-AW-eZ2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="g4H-VM-98t" secondAttribute="bottom" constant="20" id="dS5-w8-D1u"/>
+                            <constraint firstAttribute="trailing" secondItem="rV8-17-igw" secondAttribute="trailing" constant="20" symbolic="YES" id="kaI-cf-Go1"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="1uJ-fW-QNk" secondAttribute="bottom" constant="20" id="lGm-kl-HVa"/>
+                            <constraint firstItem="Lun-3e-rXc" firstAttribute="leading" secondItem="1uJ-fW-QNk" secondAttribute="trailing" constant="8" symbolic="YES" id="uVI-G6-TZb"/>
+                            <constraint firstItem="1uJ-fW-QNk" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="yru-aO-3NZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="blackLabel" destination="g4H-VM-98t" id="pmF-c0-Jhb"/>
+                        <outlet property="endGameLabel" destination="rV8-17-igw" id="eID-D5-Zvx"/>
+                        <outlet property="passButton" destination="Lun-3e-rXc" id="heZ-WR-rmG"/>
                         <outlet property="whiteLabel" destination="1uJ-fW-QNk" id="5LG-bB-5L8"/>
                         <outletCollection property="boardSpaces" destination="beN-iT-Qv6" collectionClass="NSMutableArray" id="fO2-mI-0fr"/>
                         <outletCollection property="boardSpaces" destination="3Lk-qU-2e5" collectionClass="NSMutableArray" id="fhZ-sh-ntk"/>

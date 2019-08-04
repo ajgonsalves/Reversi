@@ -19,8 +19,10 @@ class ViewController: UIViewController {
 			boardSpaces[i].layer.borderWidth = 3.0
 			boardSpaces[i].setTitle("\(i)", for: UIControl.State.normal)
 		}
+		passButton.backgroundColor = #colorLiteral(red: 0.7052466688, green: 0.6034583201, blue: 0, alpha: 1)
 		whiteLabel.layer.borderWidth = 3.0
 		blackLabel.layer.borderWidth = 3.0
+		endGameLabel.text = ""
 		updateViewFromModel()
 	}
 	
@@ -48,19 +50,32 @@ class ViewController: UIViewController {
 			boardSpaces[i].layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
 		}
 		
-		// highlight possible positions
-		if game.turn == true {
-			for i in 0..<game.whiteOptions.count {
-				boardSpaces[game.whiteOptions[i]].layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-				whiteLabel.layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-				blackLabel.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+		if let endGame = game.victor {
+			if endGame == ReversiBoard.ReversiSpace.white {
+				endGameLabel.text = "White wins"
+			}
+			else if endGame == ReversiBoard.ReversiSpace.black {
+				endGameLabel.text = "Black wins"
+			}
+			else {
+				endGameLabel.text = "Draw"
 			}
 		}
 		else {
-			for i in 0..<game.blackOptions.count {
-				boardSpaces[game.blackOptions[i]].layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
-				whiteLabel.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-				blackLabel.layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+			// highlight possible positions
+			if game.turn == true {
+				for i in 0..<game.whiteOptions.count {
+					boardSpaces[game.whiteOptions[i]].layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+					whiteLabel.layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+					blackLabel.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+				}
+			}
+			else {
+				for i in 0..<game.blackOptions.count {
+					boardSpaces[game.blackOptions[i]].layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+					whiteLabel.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+					blackLabel.layer.borderColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+				}
 			}
 		}
 		
@@ -71,6 +86,14 @@ class ViewController: UIViewController {
 		blackLabel.text = "Black: \(game.blackScore)"
 		blackLabel.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
 		blackLabel.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+		
+		// pass button text
+		if game.previousPass {
+			passButton.setTitle("End game", for: UIControl.State.normal)
+		}
+		else {
+			passButton.setTitle("Pass", for: UIControl.State.normal)
+		}
 	}
 	
 	
@@ -94,7 +117,9 @@ class ViewController: UIViewController {
 		}
 	}
 	
-	@IBAction func passButton(_ sender: UIButton) {
+	@IBOutlet var passButton: UIButton!
+	
+	@IBAction func pressPass(_ sender: UIButton) {
 		game.pass()
 		updateViewFromModel()
 	}
@@ -104,4 +129,5 @@ class ViewController: UIViewController {
 	@IBOutlet var blackLabel: UILabel!
 	
 	
+	@IBOutlet var endGameLabel: UILabel!
 }
